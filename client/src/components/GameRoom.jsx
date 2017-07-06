@@ -7,9 +7,14 @@ class GameRoom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentView:  <JoinGameRoom />,
+      currentView:  <JoinGameRoom 
+                      playGame={this.playGame.bind(this)}/>,
       drawDisabled: true
     };
+  }
+
+  playGame() {
+    console.log('Lets do this mofo!!')
   }
 
   render() {
