@@ -340,21 +340,14 @@ canvas {
 
 .join-room {
   display: grid;
-<<<<<<< HEAD
   width: 450px;
   /*margin: 0 auto; */
   padding: 5%;
-=======
-  width: 50%;
-  /*margin: 0 auto; */
-  padding: 10%;
->>>>>>> add multiplayer room rendering and disallow drawing while on lobby
   border: 1px solid black;
   box-sizing: border-box;
   /*background: #d8c6a4;*/
   z-index: 2;
   position: absolute;
-<<<<<<< HEAD
   margin-left: 332px;
   margin-top: -400px;
 }
@@ -372,15 +365,18 @@ canvas {
 }
 
 
-=======
   margin-left: 38%;
   margin-top: -400px;
 }
 
+#dance-off {
+  text-align: center;
+  font-size: x-large;
+  padding-bottom: 15%;
+}
 
 
 
 
 
 }
->>>>>>> add multiplayer room rendering and disallow drawing while on lobby
