@@ -1,6 +1,7 @@
 import React from 'react';
 import DrawCanvas from './DrawCanvas.jsx';
 import JoinGameRoom from './JoinGameRoom.jsx';
+import io from 'socket.io-client';
 
 
 class GameRoom extends React.Component {
@@ -14,7 +15,7 @@ class GameRoom extends React.Component {
   }
 
   playGame() {
-    console.log('Lets do this mofo!!')
+    this.socket = io();
   }
 
   render() {

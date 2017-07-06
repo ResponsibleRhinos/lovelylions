@@ -170,7 +170,7 @@ canvas {
 
 .join-room {
   display: grid;
-  width: 50%;
+  width: 450px;
   /*margin: 0 auto; */
   padding: 5%;
   border: 1px solid black;
@@ -178,7 +178,7 @@ canvas {
   /*background: #d8c6a4;*/
   z-index: 2;
   position: absolute;
-  margin-left: 38%;
+  margin-left: 223px;
   margin-top: -400px;
 }
 
