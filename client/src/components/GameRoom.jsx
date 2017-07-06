@@ -152,7 +152,7 @@ class GameRoom extends React.Component {
   }
 
   playGame() {
-    console.log('Lets do this mofo!!')
+    this.socket = io();
   }
 
   render() {
