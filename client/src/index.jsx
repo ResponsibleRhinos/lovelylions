@@ -128,6 +128,8 @@ class App extends React.Component {
         currentView: <Composite pic={finalImage} generateImage={this.generateImage} saveImage={this.saveComposite} login={this.state.login} idx={idx} username={username} dontShowRegenerate={true} showShare={true}/>
       })
     );
+  fetchGameRoom() {
+    console.log('hey lets play!');
   }
 
   showGameRoom() {
