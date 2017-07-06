@@ -116,7 +116,6 @@ class GameRoom extends React.Component {
     });
   }
 
-  componentWillUnmount() {
     this.socket.emit('leave game', this.state.roomId);
   }
 

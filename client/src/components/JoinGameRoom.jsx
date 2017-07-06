@@ -11,8 +11,12 @@ class JoinGameRoom extends React.Component {
     return (
       <div>
         <div className="overlay join-room">
+<<<<<<< HEAD
             <b className="draw-off">cadavre draw off!</b>
             <button onClick={this.props.playGame}>Play Game!</button>
+=======
+            
+>>>>>>> add multiplayer room rendering and disallow drawing while on lobby
         </div>
       </div>
     );
