@@ -53,6 +53,8 @@ class App extends React.Component {
       this.setState({currentView: <DrawCanvas generateImage={this.generateImage.bind(this)}/>});
     } else if (targetVal === 'gallery') {
       this.fetchGallery();
+    } else if (targetVal === 'multiplayer') {
+      this.fetchGameRoom();
     }
   }
 
@@ -73,6 +75,8 @@ class App extends React.Component {
         currentView: <Composite pic={finalImage} generateImage={this.generateImage} saveImage={this.saveComposite} login={this.state.login} idx={idx} username={username}/>
       })
     );
+  fetchGameRoom() {
+    console.log('hey lets play!');
   }
 
   fetchGallery(artist = this.state.login) {
@@ -109,6 +113,7 @@ class App extends React.Component {
           <div className="nav-bar">
             <h1>cadavre exquis</h1>
             <a href="#" onClick={this.componentSwitch}>canvas</a>
+            <a href="#" onClick={this.componentSwitch}>multiplayer</a>
             {this.state.login ? (
               <span>
                 <a href="#" onClick={this.componentSwitch}>gallery</a>
