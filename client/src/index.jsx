@@ -1,6 +1,7 @@
 import React from 'react';
 import ExquisiteWriter from './components/ExquisiteWriter.jsx';
 import DrawCanvas from './components/DrawCanvas.jsx';
+import GameRoom from './components/GameRoom.jsx';
 import Gallery from './components/Gallery.jsx';
 import LeaderBoard from './components/LeaderBoard.jsx';
 import ReactDOM from 'react-dom';
@@ -54,7 +55,7 @@ class App extends React.Component {
     } else if (targetVal === 'gallery') {
       this.fetchGallery();
     } else if (targetVal === 'multiplayer') {
-      this.fetchGameRoom();
+      this.showGameRoom();
     }
   }
 
@@ -75,8 +76,14 @@ class App extends React.Component {
         currentView: <Composite pic={finalImage} generateImage={this.generateImage} saveImage={this.saveComposite} login={this.state.login} idx={idx} username={username}/>
       })
     );
-  fetchGameRoom() {
+
+  showGameRoom() {
     console.log('hey lets play!');
+    this.setState({
+      currentView: <GameRoom 
+                      user={this.state.login}
+                      generateImage={this.generateImage.bind(this)}/>
+    });
   }
 
   fetchGallery(artist = this.state.login) {

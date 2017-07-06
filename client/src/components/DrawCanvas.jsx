@@ -70,6 +70,7 @@ class DrawCanvas extends React.Component {
   }
 
   redraw() {
+    if (!this.props.drawDisabled) {
       if (this.drawingPoints.length === 1) {
         this.context.beginPath();
         this.context.strokeStyle = '#000000 ';
@@ -92,9 +93,9 @@ class DrawCanvas extends React.Component {
           this.context.closePath();
         }
         this.context.stroke();
-
-     }
+      }
     }
+  }
 
   clearCanvas(event) {
     this.context.clearRect(0, 0, this.state.width, this.state.height);
