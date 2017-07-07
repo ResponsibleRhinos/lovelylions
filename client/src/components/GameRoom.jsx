@@ -31,19 +31,32 @@ class GameRoom extends React.Component {
   selectBodyPart(event) {
     this.socket.emit('join game', event.target.value, this.state.roomId);
 
-    this.socket.on('join game', (didJoin, bodyPart) => {
+    this.socket.on('join game', (didJoin, bodyPart, playersMissing) => {
       if (didJoin) {
         this.setState({
           bodyPart: bodyPart,
-          currentView: '' 
+          currentView: this.waitForPlayers(playersMissing)
         });
       }
-    })
+    });
 
+    this.socket.on('player joined', (playersMissing) => {
+      this.setState({
+        currentView: this.waitForPlayers(playersMissing)
+      });
+    });
   }
 
   componentWillUnmount() {
     this.socket.emit('leave game', this.state.roomId);
+  }
+
+  waitForPlayers(players) {
+    return (
+      <div className="overlay join-room">
+        <b className="draw-off">Waiting for {players} players to join game...</b>
+      </div>
+    )
   }
 
   chooseBodyParts(bodyParts) {

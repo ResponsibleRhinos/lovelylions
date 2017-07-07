@@ -123,23 +123,7 @@ app.get('/images', (req, res) => {
 //#####################################################################
 // Sockets and game rooms
 
-
-io.on('connection', (socket) => {
-  console.log(socket.id, ' user connected!');
-
-  // play game 
-  gameRoomSocket.playGame(socket);
-
-  // join game room lobby
-  gameRoomSocket.joinGame(socket);
-
-  // leave game room
-  gameRoomSocket.leaveGame(socket);
-  gameRoomSocket.disconnect(socket);
-
-});
-
-// (3 - gameRoom.playersInRoom())
+gameRoomSocket.init(io);
 
 http.listen(port, function() {
   console.log(`listening on port ${port}!`);

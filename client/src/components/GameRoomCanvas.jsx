@@ -10,7 +10,6 @@ class DrawCanvas extends React.Component {
       erasing: false,
       eColor: 'transparent',
       dColor: '#33adff',
-      // bodyPart: "head"
     }
     this.drawingPoints = [];
     this.isDrawing = false;
