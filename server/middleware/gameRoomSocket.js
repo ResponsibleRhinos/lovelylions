@@ -29,7 +29,7 @@ class GameRoomSocket {
         socket.join(`gameRoom${roomId}`);
         gameRoom.addPlayer(socket.id, bodyPartChosen);
         socket.emit('join game', true, bodyPartChosen, 3 - gameRoom.playersInRoom());
-        this.io.to(`gameRoom${roomId}`).emit('player joined', 3 - gameRoom.playersInRoom());
+        this.playerJoined(socket, gameRoom, roomId);
       } else {
         socket.emit('join game', false);
       }
@@ -58,8 +58,12 @@ class GameRoomSocket {
     });
   }
 
-  playerJoined(socket) {
-    
+  playerJoined(socket, gameRoom, roomId) {
+    if (gameRoom.playersInRoom() < 3) {
+      this.io.to(`gameRoom${roomId}`).emit('player joined', 3 - gameRoom.playersInRoom());
+    } else {
+      this.io.to(`gameRoom${roomId}`).emit('starting game', true);
+    }
   }
 };
 

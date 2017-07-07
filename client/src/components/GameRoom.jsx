@@ -35,7 +35,7 @@ class GameRoom extends React.Component {
       if (didJoin) {
         this.setState({
           bodyPart: bodyPart,
-          currentView: this.waitForPlayers(playersMissing)
+          currentView: (playersMissing !== 0) ? this.waitForPlayers(playersMissing): this.startingGame()
         });
       }
     });
@@ -45,6 +45,17 @@ class GameRoom extends React.Component {
         currentView: this.waitForPlayers(playersMissing)
       });
     });
+
+    this.socket.on('starting game', (gameStart) => {
+      this.setState({
+        currentView: this.startingGame()
+      });
+      this.startGame();
+    });
+  }
+
+  startGame() {
+
   }
 
   componentWillUnmount() {
@@ -56,6 +67,14 @@ class GameRoom extends React.Component {
     return (
       <div className="overlay join-room">
         <b className="draw-off">Waiting for {players} {playerString} to join game...</b>
+      </div>
+    )
+  }
+
+  startingGame() {
+    return (
+      <div className="overlay join-room">
+        <b className="draw-off">Game about to start...</b>
       </div>
     )
   }
