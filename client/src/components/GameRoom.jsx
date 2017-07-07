@@ -1,5 +1,5 @@
 import React from 'react';
-import DrawCanvas from './DrawCanvas.jsx';
+import GameRoomCanvas from './GameRoomCanvas.jsx';
 import JoinGameRoom from './JoinGameRoom.jsx';
 import io from 'socket.io-client';
 
@@ -8,30 +8,51 @@ class GameRoom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentView:  <JoinGameRoom 
-                      playGame={this.playGame.bind(this)}/>,
-      drawDisabled: true
+      currentView:  <JoinGameRoom playGame={this.playGame.bind(this)}/>,
+      drawDisabled: true,
+      bodyPart: 'head'
     };
     this.socket = io();
   }
 
   playGame() {
     this.socket.emit('play game', true);
-    this.socket.on('play game', (isRoomAvailable, bodyParts) => {
+    this.socket.on('play game', (isRoomAvailable, bodyParts, roomId) => {
       console.log('lets play: ', isRoomAvailable, bodyParts);
       if (isRoomAvailable) {
         this.setState({
-          currentView: this.chooseBodyParts(bodyParts)
+          currentView: this.chooseBodyParts(bodyParts),
+          roomId: roomId
+        });
+      }
+    });
+  }
+
+  selectBodyPart(event) {
+    this.socket.emit('join game', event.target.value, this.state.roomId);
+
+    this.socket.on('join game', (didJoin, bodyPart) => {
+      if (didJoin) {
+        this.setState({
+          bodyPart: bodyPart,
+          currentView: '' 
         });
       }
     })
+
+  }
+
+  componentWillUnmount() {
+    this.socket.emit('leave game', this.state.roomId);
   }
 
   chooseBodyParts(bodyParts) {
     return (
       <div className="overlay join-room">
           <b className="draw-off">Choose body part:</b>
-          <select name="select-body-part">
+          <select name="select-body-part" 
+            onChange={this.selectBodyPart.bind(this)}>
+            <option selected disabled>Choose here</option>
             {bodyParts.map((part, index) => (
               <option value={part} key={index}>{part}</option>
             ))}
@@ -43,7 +64,9 @@ class GameRoom extends React.Component {
   render() {
     return (
       <div>
-        <DrawCanvas drawDisabled={this.state.drawDisabled}/>
+        <GameRoomCanvas 
+          drawDisabled={this.state.drawDisabled}
+          bodyPart={this.state.bodyPart}/>
         {this.state.currentView}
       </div>
     );

@@ -122,21 +122,41 @@ app.get('/images', (req, res) => {
 //#####################################################################
 // Sockets and game rooms
 var gameRoom0 = new GameRoom(0);
+var gameRooms = [gameRoom0];
 
 io.on('connection', (socket) => {
-  
   console.log(socket.id, ' user connected!');
+
+  // play game 
   socket.on('play game', (msg) => {
     if (gameRoom0.isFull()) {
       socket.emit('play game', false);
     } else {
-      socket.emit('play game', true, gameRoom0.bodyPartsAvailable());
+      socket.emit('play game', true, gameRoom0.bodyPartsAvailable(), gameRoom0.getRoomId());
     }
   });
 
+  // join game room lobby
+  socket.on('join game', (bodyPartChosen, roomId) => {
+    var gameRoom = gameRooms[roomId];
+    if (gameRoom.bodyPartAvailable(bodyPartChosen)) {
+      socket.join(`room${roomId}`);
+      gameRoom.addPlayer(socket.id, bodyPartChosen);
+      socket.emit('join game', true, bodyPartChosen);
+    } else {
+      socket.emit('join game', false);
+    }
+  });
+
+  // leave game room
+  socket.on('leave game', (roomId) => {
+    var gameRoom = gameRooms[roomId];
+    gameRoom.removePlayer(socket.id);
+  })
+
 });
 
-
+// (3 - gameRoom.playersInRoom())
 
 http.listen(port, function() {
   console.log(`listening on port ${port}!`);

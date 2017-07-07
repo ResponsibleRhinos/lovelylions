@@ -30,8 +30,16 @@ class GameRoom {
   bodyPartsAvailable() {
     var bodyParts = ['head', 'torso', 'legs'];
     return bodyParts.filter((part, index) => {
-      return this.players.findIndex(player => player.bodyPart === part) === -1;
+      return this.bodyPartAvailable(part);
     });
+  }
+
+  bodyPartAvailable(bodyPart) {
+    return this.players.findIndex(player => player.bodyPart === bodyPart) === -1;
+  }
+
+  getRoomId(){
+    return this.roomId;
   }
 
 }
