@@ -11,7 +11,7 @@ class JoinGameRoom extends React.Component {
     return (
       <div>
         <div className="overlay join-room">
-            <b id="dance-off">cadavre draw off!</b>
+            <b className="draw-off">cadavre draw off!</b>
             <button onClick={this.props.playGame}>Play Game!</button>
         </div>
       </div>

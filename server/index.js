@@ -124,15 +124,16 @@ app.get('/images', (req, res) => {
 var gameRoom0 = new GameRoom(0);
 
 io.on('connection', (socket) => {
+  
   console.log(socket.id, ' user connected!');
   socket.on('play game', (msg) => {
-    console.log(socket.id, ' wants to Play!!', gameRoom0.bodyPartsAvailable());
     if (gameRoom0.isFull()) {
       socket.emit('play game', false);
     } else {
       socket.emit('play game', true, gameRoom0.bodyPartsAvailable());
     }
   });
+
 });
 
 

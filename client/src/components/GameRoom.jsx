@@ -19,7 +19,25 @@ class GameRoom extends React.Component {
     this.socket.emit('play game', true);
     this.socket.on('play game', (isRoomAvailable, bodyParts) => {
       console.log('lets play: ', isRoomAvailable, bodyParts);
+      if (isRoomAvailable) {
+        this.setState({
+          currentView: this.chooseBodyParts(bodyParts)
+        });
+      }
     })
+  }
+
+  chooseBodyParts(bodyParts) {
+    return (
+      <div className="overlay join-room">
+          <b className="draw-off">Choose body part:</b>
+          <select name="select-body-part">
+            {bodyParts.map((part, index) => (
+              <option value={part} key={index}>{part}</option>
+            ))}
+          </select>
+      </div>
+    );
   }
 
   render() {
