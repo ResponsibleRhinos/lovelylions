@@ -10,10 +10,6 @@ class DrawCanvas extends React.Component {
       erasing: false,
       eColor: 'transparent',
       dColor: '#33adff',
-<<<<<<< HEAD
-=======
-      // bodyPart: "head"
->>>>>>> user is removed from game room when disconnected
     }
     this.drawingPoints = [];
     this.isDrawing = false;
