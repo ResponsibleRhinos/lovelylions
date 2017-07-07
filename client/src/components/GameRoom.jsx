@@ -52,9 +52,10 @@ class GameRoom extends React.Component {
   }
 
   waitForPlayers(players) {
+    var playerString = (players === 1 ? 'player' : 'players');
     return (
       <div className="overlay join-room">
-        <b className="draw-off">Waiting for {players} players to join game...</b>
+        <b className="draw-off">Waiting for {players} {playerString} to join game...</b>
       </div>
     )
   }

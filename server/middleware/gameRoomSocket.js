@@ -58,9 +58,9 @@ class GameRoomSocket {
     });
   }
 
-  // playerJoined: (socket) => {
-
-  // }
+  playerJoined(socket) {
+    
+  }
 };
 
 module.exports.init = (io) => {
