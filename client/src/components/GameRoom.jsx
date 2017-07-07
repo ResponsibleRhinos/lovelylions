@@ -153,21 +153,42 @@ class GameRoom extends React.Component {
 
   playGame() {
     this.socket.emit('play game', true);
-    this.socket.on('play game', (isRoomAvailable, bodyParts) => {
+    this.socket.on('play game', (isRoomAvailable, bodyParts, roomId) => {
       console.log('lets play: ', isRoomAvailable, bodyParts);
       if (isRoomAvailable) {
         this.setState({
-          currentView: this.chooseBodyParts(bodyParts)
+          currentView: this.chooseBodyParts(bodyParts),
+          roomId: roomId
+        });
+      }
+    });
+  }
+
+  selectBodyPart(event) {
+    this.socket.emit('join game', event.target.value, this.state.roomId);
+
+    this.socket.on('join game', (didJoin, bodyPart) => {
+      if (didJoin) {
+        this.setState({
+          bodyPart: bodyPart,
+          currentView: '' 
         });
       }
     })
+
+  }
+
+  componentWillUnmount() {
+    this.socket.emit('leave game', this.state.roomId);
   }
 
   chooseBodyParts(bodyParts) {
     return (
       <div className="overlay join-room">
           <b className="draw-off">Choose body part:</b>
-          <select name="select-body-part">
+          <select name="select-body-part" 
+            onChange={this.selectBodyPart.bind(this)}>
+            <option selected disabled>Choose here</option>
             {bodyParts.map((part, index) => (
               <option value={part} key={index}>{part}</option>
             ))}
@@ -179,6 +200,7 @@ class GameRoom extends React.Component {
   render() {
     return (
       <div>
+<<<<<<< HEAD
         { this.state.showCanvas &&  
           <GameRoomCanvas 
             drawDisabled={this.state.drawDisabled}
@@ -186,6 +208,11 @@ class GameRoom extends React.Component {
             generateImage={this.sendImage.bind(this)}
             ref="canvas"/>
         }
+=======
+        <GameRoomCanvas 
+          drawDisabled={this.state.drawDisabled}
+          bodyPart={this.state.bodyPart}/>
+>>>>>>> user is removed from game room when disconnected
         {this.state.currentView}
       </div>
     );
