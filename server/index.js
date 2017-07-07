@@ -25,6 +25,7 @@ require('../config/passport.js')(passport);
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var GameRoom = require('./models/GameRooms.js');
+var gameRoomSocket = require('./middleware/gameRoomSocket.js');
 
 app.use(logger('dev'));
 app.use(cookieParser());
@@ -121,38 +122,20 @@ app.get('/images', (req, res) => {
 
 //#####################################################################
 // Sockets and game rooms
-var gameRoom0 = new GameRoom(0);
-var gameRooms = [gameRoom0];
+
 
 io.on('connection', (socket) => {
   console.log(socket.id, ' user connected!');
 
   // play game 
-  socket.on('play game', (msg) => {
-    if (gameRoom0.isFull()) {
-      socket.emit('play game', false);
-    } else {
-      socket.emit('play game', true, gameRoom0.bodyPartsAvailable(), gameRoom0.getRoomId());
-    }
-  });
+  gameRoomSocket.playGame(socket);
 
   // join game room lobby
-  socket.on('join game', (bodyPartChosen, roomId) => {
-    var gameRoom = gameRooms[roomId];
-    if (gameRoom.bodyPartAvailable(bodyPartChosen)) {
-      socket.join(`room${roomId}`);
-      gameRoom.addPlayer(socket.id, bodyPartChosen);
-      socket.emit('join game', true, bodyPartChosen);
-    } else {
-      socket.emit('join game', false);
-    }
-  });
+  gameRoomSocket.joinGame(socket);
 
   // leave game room
-  socket.on('leave game', (roomId) => {
-    var gameRoom = gameRooms[roomId];
-    gameRoom.removePlayer(socket.id);
-  })
+  gameRoomSocket.leaveGame(socket);
+  gameRoomSocket.disconnect(socket);
 
 });
 
