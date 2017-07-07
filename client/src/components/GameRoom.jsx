@@ -30,7 +30,18 @@ class GameRoom extends React.Component {
 
   selectBodyPart(event) {
     this.socket.emit('join game', event.target.value, this.state.roomId);
+    this.joinGame();
+    this.playerJoined();   
 
+    this.socket.on('starting game', (gameStart) => {
+      this.setState({
+        currentView: this.startingGame()
+      });
+      this.startGame();
+    });
+  }
+
+  joinGame() {
     this.socket.on('join game', (didJoin, bodyPart, playersMissing) => {
       if (didJoin) {
         this.setState({
@@ -39,18 +50,13 @@ class GameRoom extends React.Component {
         });
       }
     });
+  }
 
+  playerJoined() {
     this.socket.on('player joined', (playersMissing) => {
       this.setState({
         currentView: this.waitForPlayers(playersMissing)
       });
-    });
-
-    this.socket.on('starting game', (gameStart) => {
-      this.setState({
-        currentView: this.startingGame()
-      });
-      this.startGame();
     });
   }
 
