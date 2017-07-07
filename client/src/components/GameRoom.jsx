@@ -12,10 +12,14 @@ class GameRoom extends React.Component {
                       playGame={this.playGame.bind(this)}/>,
       drawDisabled: true
     };
+    this.socket = io();
   }
 
   playGame() {
-    this.socket = io();
+    this.socket.emit('play game', true);
+    this.socket.on('play game', (isRoomAvailable, bodyParts) => {
+      console.log('lets play: ', isRoomAvailable, bodyParts);
+    })
   }
 
   render() {

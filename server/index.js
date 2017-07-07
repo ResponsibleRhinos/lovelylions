@@ -24,6 +24,7 @@ require('../config/passport.js')(passport);
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var GameRoom = require('./models/GameRooms.js');
 
 app.use(logger('dev'));
 app.use(cookieParser());
@@ -120,9 +121,18 @@ app.get('/images', (req, res) => {
 
 //#####################################################################
 // Sockets and game rooms
+var gameRoom0 = new GameRoom(0);
 
 io.on('connection', (socket) => {
   console.log(socket.id, ' user connected!');
+  socket.on('play game', (msg) => {
+    console.log(socket.id, ' wants to Play!!', gameRoom0.bodyPartsAvailable());
+    if (gameRoom0.isFull()) {
+      socket.emit('play game', false);
+    } else {
+      socket.emit('play game', true, gameRoom0.bodyPartsAvailable());
+    }
+  });
 });
 
 

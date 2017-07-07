@@ -23,6 +23,17 @@ class GameRoom {
     return this.players.length;
   }
 
+  isFull() {
+    return this.players.length === 3;
+  }
+
+  bodyPartsAvailable() {
+    var bodyParts = ['head', 'torso', 'legs'];
+    return bodyParts.filter((part, index) => {
+      return this.players.findIndex(player => player.bodyPart === part) === -1;
+    });
+  }
+
 }
 
 module.exports = GameRoom;
