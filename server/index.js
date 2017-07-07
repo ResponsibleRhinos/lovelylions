@@ -25,7 +25,10 @@ require('../config/passport.js')(passport);
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var GameRoom = require('./models/GameRooms.js');
+<<<<<<< HEAD
 var gameRoomSocket = require('./middleware/gameRoomSocket.js');
+=======
+>>>>>>> socket connection started and receiving game room details
 
 app.use(logger('dev'));
 app.use(cookieParser());
@@ -144,6 +147,7 @@ app.get('/images', (req, res) => {
 
 //#####################################################################
 // Sockets and game rooms
+var gameRoom0 = new GameRoom(0);
 
 gameRoomSocket.init(io);
 

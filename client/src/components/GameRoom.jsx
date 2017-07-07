@@ -152,7 +152,10 @@ class GameRoom extends React.Component {
   }
 
   playGame() {
-    this.socket = io();
+    this.socket.emit('play game', true);
+    this.socket.on('play game', (isRoomAvailable, bodyParts) => {
+      console.log('lets play: ', isRoomAvailable, bodyParts);
+    })
   }
 
   render() {

@@ -54,6 +54,7 @@ class GameRoom {
     this.image = {};
   }
 
+
 }
 
 module.exports = GameRoom;
