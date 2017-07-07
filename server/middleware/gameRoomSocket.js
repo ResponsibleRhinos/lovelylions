@@ -130,7 +130,7 @@ module.exports.init = (io) => {
   // end game
   gameRoomSocket.gameEnd(socket);
 
-});
+  });
 }
 
 
