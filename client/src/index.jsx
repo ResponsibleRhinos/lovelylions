@@ -130,7 +130,6 @@ class App extends React.Component {
     );
 
   showGameRoom() {
-    console.log('hey lets play!');
     this.setState({
       currentView: <GameRoom 
                       user={this.state.login}
