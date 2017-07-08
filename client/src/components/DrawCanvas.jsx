@@ -132,6 +132,9 @@ class DrawCanvas extends React.Component {
       this.scrollLeft = document.body.scrollLeft;
       this.scrollTop = document.body.scrollTop;
     });
+    document.addEventListener('touchmove', event => {
+      event.preventDefault();
+    });
   }
 
   render () {
