@@ -62,20 +62,18 @@ class GameRoomSocket {
     if (gameRoom.playersInRoom() < 3) {
       this.io.to(`gameRoom${roomId}`).emit('player joined', 3 - gameRoom.playersInRoom());
     } else {
-      this.io.to(`gameRoom${roomId}`).emit('starting game', true);
+      this.io.to(`gameRoom${roomId}`).emit('starting game', 50);
     }
   }
 
   gameEnd(socket) {
     socket.on('game end', (userImage) => {
-      console.log('image received!', userImage);
-      console.log('name: ', this.getSocketGameRoomName(socket));
-      console.log('id: ', this.getSocketGameRoomId(socket));
       var gameRoom = this.getSocketGameRoom(socket);
       gameRoom.addPartToImage(userImage);
       if (gameRoom.isImageComplete()) {
         var roomName = this.getSocketGameRoomName(socket);
         this.io.to(roomName).emit('image complete', gameRoom.image);
+        gameRoom.deleteImage();
       }
     });
   }

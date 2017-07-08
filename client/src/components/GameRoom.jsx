@@ -2,6 +2,9 @@ import React from 'react';
 import GameRoomCanvas from './GameRoomCanvas.jsx';
 import JoinGameRoom from './JoinGameRoom.jsx';
 import io from 'socket.io-client';
+import Countdown from 'react-countdown-clock';
+import Composite from './composite.jsx';
+
 
 
 class GameRoom extends React.Component {
@@ -13,6 +16,17 @@ class GameRoom extends React.Component {
       bodyPart: 'head'
     };
     this.socket = io();
+  }
+
+
+  compmonentDidMount() {
+    this.setState({
+      imageView: <GameRoomCanvas 
+          drawDisabled={this.state.drawDisabled}
+          bodyPart={this.state.bodyPart}
+          generateImage={this.sendImage.bind(this)}
+          ref="canvas"/>
+        });
   }
 
   playGame() {
@@ -66,6 +80,14 @@ class GameRoom extends React.Component {
     this.socket.emit('game end', userImage);
     this.socket.on('image complete', (image) => {
       console.log(image);
+      this.imageComplete(image);
+    });
+  }
+
+  imageComplete(image) {
+    this.setState({
+      // currentView: '',
+      currentView: <Composite pic={image} userPart={this.state.bodyPart} login={this.state.login}/>
     });
   }
 
