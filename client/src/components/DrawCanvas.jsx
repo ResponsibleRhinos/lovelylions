@@ -10,8 +10,8 @@ class DrawCanvas extends React.Component {
       erasing: false,
       eColor: 'transparent',
       dColor: '#33adff',
-      bodyPart: "head"
-    }
+      bodyPart: 'head'
+    };
     this.drawingPoints = [];
     this.isDrawing = false;
     this.scrollLeft = 0;
@@ -23,7 +23,7 @@ class DrawCanvas extends React.Component {
       erasing: true,
       eColor: '#33adff',
       dColor: 'transparent'
-    })
+    });
   }
 
   onDrawClick() {
@@ -31,13 +31,13 @@ class DrawCanvas extends React.Component {
       erasing: false,
       eColor: 'transparent',
       dColor: '#33adff'
-    })
+    });
   }
 
   updateBrushWidth(event) {
     this.setState({
       brushWidth: event.target.value
-    })
+    });
   }
 
   startDraw(event) {
@@ -66,35 +66,34 @@ class DrawCanvas extends React.Component {
   }
 
   addToDrawingEvents(x, y, drag) {
-    this.drawingPoints.push({x: x, y: y, drag: drag})
+    this.drawingPoints.push({x: x, y: y, drag: drag});
   }
 
   redraw() {
-      if (this.drawingPoints.length === 1) {
+    if (this.drawingPoints.length === 1) {
+      this.context.beginPath();
+      this.context.strokeStyle = '#000000 ';
+      this.context.arc(this.drawingPoints[0].x, this.drawingPoints[0].y, Math.floor(this.state.brushWidth / 2), 0, Math.PI * 2);
+      this.context.fill();
+    } else {
+      for (var i = 0; i < this.drawingPoints.length; i++) {
         this.context.beginPath();
-        this.context.strokeStyle = '#000000 ';
-        this.context.arc(this.drawingPoints[0].x, this.drawingPoints[0].y, Math.floor(this.state.brushWidth / 2), 0, Math.PI * 2);
-        this.context.fill();
-      } else {
-        for (var i = 0; i < this.drawingPoints.length; i++) {
-          this.context.beginPath();
-          this.state.erasing ? this.context.globalCompositeOperation = 'destination-out' : this.context.globalCompositeOperation = 'source-over';
-          this.context.strokeStyle = "#000000 ";
-          this.context.lineJoin = 'round';
-          this.context.lineWidth = this.state.brushWidth;
+        this.state.erasing ? this.context.globalCompositeOperation = 'destination-out' : this.context.globalCompositeOperation = 'source-over';
+        this.context.strokeStyle = "#000000 ";
+        this.context.lineJoin = 'round';
+        this.context.lineWidth = this.state.brushWidth;
 
-         if (this.drawingPoints[i].drag && i) {
-            this.context.moveTo(this.drawingPoints[i - 1].x, this.drawingPoints[i - 1].y);
-          } else {
-            this.context.moveTo(this.drawingPoints[i].x, this.drawingPoints[i].y);
-          }
-          this.context.lineTo(this.drawingPoints[i].x, this.drawingPoints[i].y);
-          this.context.closePath();
+        if (this.drawingPoints[i].drag && i) {
+          this.context.moveTo(this.drawingPoints[i - 1].x, this.drawingPoints[i - 1].y);
+        } else {
+          this.context.moveTo(this.drawingPoints[i].x, this.drawingPoints[i].y);
         }
-        this.context.stroke();
-
-     }
+        this.context.lineTo(this.drawingPoints[i].x, this.drawingPoints[i].y);
+        this.context.closePath();
+      }
+      this.context.stroke();
     }
+  }
 
   clearCanvas(event) {
     this.context.clearRect(0, 0, this.state.width, this.state.height);
@@ -103,12 +102,12 @@ class DrawCanvas extends React.Component {
     this.setState({
       eColor: 'transparent',
       dColor: '#33adff'
-    })
+    });
   }
 
   submitImage(event) {
     var userImage = {};
-    userImage[this.state.bodyPart] = {path: this.canvas.toDataURL("image/png")}
+    userImage[this.state.bodyPart] = {path: this.canvas.toDataURL("image/png")};
     this.props.generateImage(userImage);
   }
 
@@ -137,8 +136,8 @@ class DrawCanvas extends React.Component {
 
   render () {
     //sets cursor styling
-    var style = {}
-    this.state.erasing ? style.cursor = 'url(eraser.cur) 15 15, auto' : style.cursor = 'crosshair'
+    var style = {};
+    this.state.erasing ? style.cursor = 'url(eraser.cur) 15 15, auto' : style.cursor = 'crosshair';
     return (
       <div className ="draw-canvas">
         <div>
@@ -157,8 +156,8 @@ class DrawCanvas extends React.Component {
           <input className="clearBtn" onClick={this.clearCanvas.bind(this)} type='button' value="Clear"></input>
           <span>Brush size: {this.state.brushWidth}</span>
           <input onChange={this.updateBrushWidth.bind(this)}
-          value={this.state.brushWidth}
-          type="range" min="5" max="25" step="1"></input>
+            value={this.state.brushWidth}
+            type="range" min="5" max="25" step="1"></input>
         </div>
         <div className="button-cluster">
           <select onChange={this.changePart.bind(this)}>
@@ -169,7 +168,7 @@ class DrawCanvas extends React.Component {
           <input onClick={this.submitImage.bind(this)} type="button" value="Done"></input>
         </div>
       </div>
-      )
+    );
   }
 }
 
