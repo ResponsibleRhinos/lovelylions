@@ -107,16 +107,28 @@ class GameRoom extends React.Component {
 
   imageComplete(image) {
     this.setState({
-      // currentView: '',
       showCanvas: false,
       currentView: <Composite pic={image} 
           userPart={this.state.bodyPart} 
           login={this.props.login}
-          dontShowRegenerate={true}/>
+          dontShowRegenerate={true}
+          saveImage={this.saveImage.bind(this)}/>
     });
+    this.socket.emit('image received', true);
   }
 
+  componentWillUnmount() {
     this.socket.emit('leave game', this.state.roomId);
+  }
+
+  saveImage(image) {
+    image.artist = this.props.login;
+    console.log('image saved: ', image);
+    return fetch('/saveGameImage', {
+      'method': 'POST',
+      'headers': {'Content-Type': 'application/json'},
+      'body': JSON.stringify(image)
+    }).then(() => this.props.fetchGallery());
   }
 
   waitForPlayers(players) {
@@ -151,100 +163,9 @@ class GameRoom extends React.Component {
     );
   }
 
-  playGame() {
-    this.socket.emit('play game', true);
-    this.socket.on('play game', (isRoomAvailable, bodyParts, roomId) => {
-      console.log('lets play: ', isRoomAvailable, bodyParts);
-      if (isRoomAvailable) {
-        this.setState({
-          currentView: this.chooseBodyParts(bodyParts),
-          roomId: roomId
-        });
-      }
-    });
-  }
-
-  selectBodyPart(event) {
-    this.socket.emit('join game', event.target.value, this.state.roomId);
-    this.joinGame();
-    this.playerJoined();   
-
-    this.socket.on('starting game', (gameStart) => {
-      this.setState({
-        currentView: this.startingGame()
-      });
-      this.startGame();
-    });
-  }
-
-  joinGame() {
-    this.socket.on('join game', (didJoin, bodyPart, playersMissing) => {
-      if (didJoin) {
-        this.setState({
-          bodyPart: bodyPart,
-          currentView: (playersMissing !== 0) ? this.waitForPlayers(playersMissing): this.startingGame()
-        });
-      }
-    });
-  }
-
-  playerJoined() {
-    this.socket.on('player joined', (playersMissing) => {
-      this.setState({
-        currentView: this.waitForPlayers(playersMissing)
-      });
-    });
-  }
-
-
-  sendImage(userImage) {
-    console.log('image sent!');
-    this.socket.emit('game end', userImage);
-    this.socket.on('image complete', (image) => {
-      console.log(image);
-    });
-  }
-
-  componentWillUnmount() {
-    this.socket.emit('leave game', this.state.roomId);
-  }
-
-  waitForPlayers(players) {
-    var playerString = (players === 1 ? 'player' : 'players');
-    return (
-      <div className="overlay join-room">
-        <b className="draw-off">Waiting for {players} {playerString} to join game...</b>
-      </div>
-    )
-  }
-
-  startingGame() {
-    return (
-      <div className="overlay join-room">
-        <b className="draw-off">Game about to start...</b>
-      </div>
-    )
-  }
-
-  chooseBodyParts(bodyParts) {
-    return (
-      <div className="overlay join-room">
-          <b className="draw-off">Choose body part:</b>
-          <select name="select-body-part" 
-            onChange={this.selectBodyPart.bind(this)}>
-            <option selected disabled>Choose here</option>
-            {bodyParts.map((part, index) => (
-              <option value={part} key={index}>{part}</option>
-            ))}
-          </select>
-      </div>
-    );
-  }
-
   render() {
     return (
       <div>
-<<<<<<< HEAD
         { this.state.showCanvas &&  
           <GameRoomCanvas 
             drawDisabled={this.state.drawDisabled}
@@ -252,11 +173,6 @@ class GameRoom extends React.Component {
             generateImage={this.sendImage.bind(this)}
             ref="canvas"/>
         }
-=======
-        <GameRoomCanvas 
-          drawDisabled={this.state.drawDisabled}
-          bodyPart={this.state.bodyPart}/>
->>>>>>> user is removed from game room when disconnected
         {this.state.currentView}
       </div>
     );
