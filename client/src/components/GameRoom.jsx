@@ -13,7 +13,8 @@ class GameRoom extends React.Component {
     this.state = {
       currentView:  <JoinGameRoom playGame={this.playGame.bind(this)}/>,
       drawDisabled: true,
-      bodyPart: 'head'
+      bodyPart: 'head',
+      showCanvas: true
     };
     this.socket = io();
   }
@@ -74,6 +75,23 @@ class GameRoom extends React.Component {
     });
   }
 
+  startGame(seconds) {
+    this.setState({
+      currentView: <Countdown seconds={seconds}
+        color="#846946"
+        alpha={0.9}
+        size={40} 
+        onComplete={this.endGame.bind(this)}/>,
+      drawDisabled: false
+    });
+  }
+
+  endGame() {
+    this.setState({
+      drawDisabled: true
+    });
+    this.refs.canvas.submitImage();
+  }
 
   sendImage(userImage) {
     console.log('image sent!');
@@ -87,6 +105,7 @@ class GameRoom extends React.Component {
   imageComplete(image) {
     this.setState({
       // currentView: '',
+      showCanvas: false,
       currentView: <Composite pic={image} userPart={this.state.bodyPart} login={this.state.login}/>
     });
   }
@@ -130,9 +149,19 @@ class GameRoom extends React.Component {
   render() {
     return (
       <div>
+<<<<<<< HEAD
         <GameRoomCanvas 
           drawDisabled={this.state.drawDisabled}
           bodyPart={this.state.bodyPart}/>
+=======
+        { this.state.showCanvas &&  
+          <GameRoomCanvas 
+            drawDisabled={this.state.drawDisabled}
+            bodyPart={this.state.bodyPart}
+            generateImage={this.sendImage.bind(this)}
+            ref="canvas"/>
+        }
+>>>>>>> game final image correctly rendering
         {this.state.currentView}
       </div>
     );
