@@ -196,8 +196,13 @@ class GameRoom extends React.Component {
     });
   }
 
-  startGame() {
 
+  sendImage(userImage) {
+    console.log('image sent!');
+    this.socket.emit('game end', userImage);
+    this.socket.on('image complete', (image) => {
+      console.log(image);
+    });
   }
 
   componentWillUnmount() {
