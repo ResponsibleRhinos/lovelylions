@@ -73,14 +73,15 @@ class App extends React.Component {
     console.log(idx);
     fetch(`/share?pic=${username}_${idx}`).then(res => res.json())
       .then(finalImage => this.setState({
-        currentView: <Composite pic={finalImage} generateImage={this.generateImage} saveImage={this.saveComposite} login={this.state.login} idx={idx} username={username}/>
+        currentView: <Composite pic={finalImage} generateImage={this.generateImage} saveImage={this.saveComposite} login={this.state.login} idx={idx} username={username} dontShowRegenerate={true} showShare={true}/>
       })
     );
+  }
 
   showGameRoom() {
     this.setState({
       currentView: <GameRoom 
-                      user={this.state.login}
+                      login={this.state.login}
                       generateImage={this.generateImage.bind(this)}/>
     });
   }

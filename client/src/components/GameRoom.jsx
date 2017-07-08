@@ -106,7 +106,10 @@ class GameRoom extends React.Component {
     this.setState({
       // currentView: '',
       showCanvas: false,
-      currentView: <Composite pic={image} userPart={this.state.bodyPart} login={this.state.login}/>
+      currentView: <Composite pic={image} 
+          userPart={this.state.bodyPart} 
+          login={this.props.login}
+          dontShowRegenerate={true}/>
     });
   }
 
@@ -149,11 +152,6 @@ class GameRoom extends React.Component {
   render() {
     return (
       <div>
-<<<<<<< HEAD
-        <GameRoomCanvas 
-          drawDisabled={this.state.drawDisabled}
-          bodyPart={this.state.bodyPart}/>
-=======
         { this.state.showCanvas &&  
           <GameRoomCanvas 
             drawDisabled={this.state.drawDisabled}
@@ -161,7 +159,6 @@ class GameRoom extends React.Component {
             generateImage={this.sendImage.bind(this)}
             ref="canvas"/>
         }
->>>>>>> game final image correctly rendering
         {this.state.currentView}
       </div>
     );
