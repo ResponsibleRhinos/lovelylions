@@ -1,4 +1,4 @@
-body {
+body { 
 margin: 0px;
 font-family: 'Work Sans', sans-serif;
 background-color: #fffdf9;
@@ -127,13 +127,6 @@ background-color: #fffdf9;
   }
 
 
-.gallery-pic {
-  text-align: center;
-  padding: 20px;
-}
-.brushSpan {
-  padding-left: 2px
-}
   @-webkit-keyframes highlight {
     0% {
       background: #e6f7ff;
@@ -153,6 +146,13 @@ background-color: #fffdf9;
   .drawBrush:hover {
     background-image: linear-gradient(to bottom, #c3e3fa, #a5defb)
   }
+.gallery-pic {
+  text-align: center;
+  padding: 20px;
+}
+.brushSpan {
+  padding-left: 2px
+}
 
   .drawBrush:active {
     animation-name: highlight;
