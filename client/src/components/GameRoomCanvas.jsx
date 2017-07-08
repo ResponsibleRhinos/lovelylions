@@ -1,6 +1,6 @@
 import React from 'react';
 
-class DrawCanvas extends React.Component {
+class GameRoomCanvas extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -168,4 +168,4 @@ class DrawCanvas extends React.Component {
   }
 }
 
-export default DrawCanvas;
+export default GameRoomCanvas;
