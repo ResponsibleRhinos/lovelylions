@@ -178,7 +178,7 @@ canvas {
   /*background: #d8c6a4;*/
   z-index: 2;
   position: absolute;
-  margin-left: 223px;
+  margin-left: 332px;
   margin-top: -400px;
 }
 
@@ -186,6 +186,12 @@ canvas {
   text-align: center;
   font-size: x-large;
   padding-bottom: 15%;
+}
+
+.react-countdown-clock {
+  text-align: center;
+  margin-left: 960px;
+  margin-top: -530px;
 }
 
 

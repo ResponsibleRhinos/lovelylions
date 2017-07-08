@@ -47,12 +47,15 @@ class GameRoom extends React.Component {
     this.socket.emit('join game', event.target.value, this.state.roomId);
     this.joinGame();
     this.playerJoined();   
+    this.startingGame();
+  }
 
-    this.socket.on('starting game', (gameStart) => {
+  startingGame(){
+    this.socket.on('starting game', (seconds) => {
       this.setState({
-        currentView: this.startingGame()
+        currentView: this.startingGameDisplay()
       });
-      this.startGame();
+      this.startGame(seconds);
     });
   }
 
@@ -126,7 +129,7 @@ class GameRoom extends React.Component {
     )
   }
 
-  startingGame() {
+  startingGameDisplay() {
     return (
       <div className="overlay join-room">
         <b className="draw-off">Game about to start...</b>

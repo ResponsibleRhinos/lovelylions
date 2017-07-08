@@ -127,6 +127,9 @@ module.exports.init = (io) => {
   gameRoomSocket.leaveGame(socket);
   gameRoomSocket.disconnect(socket);
 
+  // end game
+  gameRoomSocket.gameEnd(socket);
+
 });
 }
 
