@@ -1,14 +1,9 @@
 body {
-  margin: 0px;
-  font-family: 'Work Sans', sans-serif;
-  background-color: #fffdf9;
+margin: 0px;
+font-family: 'Work Sans', sans-serif;
+background-color: #fffdf9;
 
 }
-
-.foreground {
-  margin: 2% 5%;
-}
-
 
 .draw-canvas {
     -webkit-user-select: none; /* webkit (safari, chrome) browsers */
@@ -17,153 +12,186 @@ body {
     -ms-user-select: none; /* IE10+ */
 }
 
-.exquisite-writer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  /*bottom: 0;
-  right: 0;*/
-  z-index: -3;
-  overflow: hidden;
-  color: #DDDDDD;
-  margin: 5px;
-  margin-top: -10;
-  margin-bottom: 0;
-  text-align: justify;
-  font-family: 'Raleway Dots', cursive;
-}
-
 .nav-bar {
-  width: 900px;
-  margin: 0 auto;
-  color: #050505;
-  text-align: left;
-  background-color: rgba(255,255,255,.5);
-  padding: 10px;
-}
+    width: 100%;
+    margin: 0 auto;
+    color: #050505;
+    text-align: left;
+    background-color: rgba(255,255,255,.5);
+    padding: 10px;
+  }
 
 .nav-bar h1 {
-  display: inline;
-  font-size: 36pt;
-}
+    display: inline;
+    font-size: 2em;
+  }
 
-a {
-  color: #050505;
-}
+  a {
+    color: #050505;
+  }
 
 .nav-bar a {
-  font-size: 16pt;
-  margin: -5px 8px;
-  float: right;
-}
-
-.main-component {
-  position: relative;
-}
-
-canvas {
-  display: grid;
-  margin: 0 auto;
-  border-radius: 9px;
-}
-
-.overlay {
-  display: grid;
-  margin: 0 auto;
-  margin-top: -450px;
-  background-image: url("./paper.png");
-  background-size: cover;
-  box-shadow: 0px 30px 40px rgba(0,0,0,.1);
-  border-radius: 9px;
-}
-
-.button-cluster {
-  display: table;
-  margin: 5px auto;
-}
-
-.user-button .login {
-  font-weight: bold;
-}
-
-.user-button:hover .login {
-  visibility: hidden;
-}
-
-.user-button:hover .logout:before {
-  content: "logout";
-}
-
-.gallery-pic a {
-  display: block;
-  text-align: center;
-  margin: 0;
-}
-
-@-webkit-keyframes highlight {
-  0% {
-    background: #e6f7ff;
+    font-size: 1em;
+    margin: -5px 8px;
+    float: right;
   }
-  100% {
-    background: none;
+
+  .main-component {
+    position: relative;
   }
-}
-.drawBrush {
-  border: solid black 1px;
-  height: 27px;
-  width: 27px;
-  margin-bottom: 2px;
-  cursor: pointer;
-}
 
-.drawBrush:hover {
-  background-image: linear-gradient(to bottom, #c3e3fa, #a5defb)
-}
+  .button-cluster {
+    display: table;
+    margin: 5px auto;
+  }
 
-.drawBrush:active {
-  animation-name: highlight;
-  animation-duration: 1s;
-  transition: ;
-}
+  .user-button .login {
+    font-weight: bold;
+  }
 
-.eraser {
-  border: solid black 1px;
-  height: 27px;
-  width: 27px;
-  margin-bottom: 2px;
-  cursor: pointer;
-}
+  .user-button:hover .login {
+    visibility: hidden;
+  }
 
-.eraser:hover {
-  background-image: linear-gradient(to bottom, #c3e3fa, #a5defb)
-}
+  .user-button:hover .logout:before {
+    content: "logout";
+  }
 
-.eraser:active {
-  animation-name: highlight;
-  animation-duration: 1s;
-  transition: ;
-}
+  .gallery-pic a {
+    display: block;
+    text-align: center;
+    margin: 0;
+  }
+  
 
-.brushWidth {
-  display: block;
-  height: 27px;
-  width: auto;
-  border: solid black 1px;
-}
+@media only screen and (min-device-width: 400px) {
 
-.clearBtn {
-  border: solid black 1px;
-}
+  .foreground {
+    margin: 2% 5%;
+  }
 
-.gallery-pic {
-  text-align: justify;
-  padding: 20px;
-}
-.brushSpan {
-  padding-left: 2px
-}
 
-.pic-part {
-  max-width: 100%;
-  max-height: auto;
+
+  .exquisite-writer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /*bottom: 0;
+    right: 0;*/
+    z-index: -3;
+    overflow: hidden;
+    color: #DDDDDD;
+    margin: 5px;
+    margin-top: -10;
+    margin-bottom: 0;
+    text-align: justify;
+    font-family: 'Raleway Dots', cursive;
+  }
+
+  .nav-bar {
+    width: 900px;
+    margin: 0 auto;
+    color: #050505;
+    text-align: left;
+    background-color: rgba(255,255,255,.5);
+    padding: 10px;
+  }
+
+  .nav-bar h1 {
+    display: inline;
+    font-size: 36pt;
+  }
+
+
+  .nav-bar a {
+    font-size: 16pt;
+    margin: -5px 8px;
+    float: right;
+  }
+
+
+  canvas {
+    display: grid;
+    margin: 0 auto;
+    border-radius: 9px;
+  }
+
+  .overlay {
+    display: grid;
+    margin: 0 auto;
+    margin-top: -450px;
+    background-image: url("./paper.png");
+    background-size: cover;
+    box-shadow: 0px 30px 40px rgba(0,0,0,.1);
+    border-radius: 9px;
+  }
+
+
+  @-webkit-keyframes highlight {
+    0% {
+      background: #e6f7ff;
+    }
+    100% {
+      background: none;
+    }
+  }
+  .drawBrush {
+    border: solid black 1px;
+    height: 27px;
+    width: 27px;
+    margin-bottom: 2px;
+    cursor: pointer;
+  }
+
+  .drawBrush:hover {
+    background-image: linear-gradient(to bottom, #c3e3fa, #a5defb)
+  }
+
+  .drawBrush:active {
+    animation-name: highlight;
+    animation-duration: 1s;
+    transition: ;
+  }
+
+  .eraser {
+    border: solid black 1px;
+    height: 27px;
+    width: 27px;
+    margin-bottom: 2px;
+    cursor: pointer;
+  }
+
+  .eraser:hover {
+    background-image: linear-gradient(to bottom, #c3e3fa, #a5defb)
+  }
+
+  .eraser:active {
+    animation-name: highlight;
+    animation-duration: 1s;
+    transition: ;
+  }
+
+  .brushWidth {
+    display: block;
+    height: 27px;
+    width: auto;
+    border: solid black 1px;
+  }
+
+  .clearBtn {
+    border: solid black 1px;
+  }
+
+  .gallery-pic {
+    text-align: justify;
+    padding: 20px;
+  }
+  .brushSpan {
+    padding-left: 2px
+  }
+
+  .pic-part {
+    max-width: 100%;
+    max-height: auto;
+  }
 }
