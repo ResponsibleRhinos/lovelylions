@@ -21,7 +21,7 @@ class GameRoomSocket {
   }
 
   getAvailableRooms() {
-    return this.gameRooms.map((gameRoom, index) => {
+    return this.gameRooms.filter((gameRoom, index) => {
       return !gameRoom.isFull();
     });
   }
@@ -32,17 +32,18 @@ class GameRoomSocket {
 
   playGame(socket) {
     socket.on('play game', (msg) => {
-      if (gameRoom0.isFull()) {
+      var gameRoom = this.getFirstAvailableRoom();
+      if (!gameRoom) {
         socket.emit('play game', false);
       } else {
-        socket.emit('play game', true, gameRoom0.bodyPartsAvailable(), gameRoom0.getRoomId());
+        socket.emit('play game', true, gameRoom.bodyPartsAvailable(), gameRoom.getRoomId());
       }
     });
   }
 
   joinGame(socket) {
     socket.on('join game', (bodyPartChosen, roomId) => {
-      var gameRoom = gameRooms[roomId];
+      var gameRoom = this.gameRooms[roomId];
       if (gameRoom.bodyPartAvailable(bodyPartChosen)) {
         socket.join(`gameRoom${roomId}`);
         gameRoom.addPlayer(socket.id, bodyPartChosen);
@@ -56,7 +57,7 @@ class GameRoomSocket {
 
   leaveGame(socket) {
     socket.on('leave game', (roomId) => {
-      var gameRoom = gameRooms[roomId];
+      var gameRoom = this.gameRooms[roomId];
       gameRoom.removePlayer(socket.id);
       this.io.to(`gameRoom${roomId}`).emit('player joined', 3 - gameRoom.playersInRoom());
     });
@@ -67,7 +68,7 @@ class GameRoomSocket {
       Object.keys(socket.rooms).forEach((room, index) => {
         if (index > 0) {
           var roomIndex = /\d+/.exec(room);
-          var gameRoom = gameRooms[parseInt(roomIndex[0])];
+          var gameRoom = this.gameRooms[parseInt(roomIndex[0])];
           gameRoom.removePlayer(socket.id);
           console.log('game left: ', roomIndex);
           this.io.to(`gameRoom${roomIndex}`).emit('player joined', 3 - gameRoom.playersInRoom());
@@ -105,7 +106,7 @@ class GameRoomSocket {
   }
 
   getSocketGameRoom(socket) {
-    return gameRooms[this.getSocketGameRoomId(socket)];
+    return this.gameRooms[this.getSocketGameRoomId(socket)];
   }
 
 };
