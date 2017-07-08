@@ -3,6 +3,8 @@ class GameRoom {
   constructor(id){
     this.players = [];
     this.roomId = id;
+    this.image = {};
+  }
 
   addPlayer(playerId, bodyPart) {
     this.players.push({
@@ -53,7 +55,6 @@ class GameRoom {
   deleteImage(){
     this.image = {};
   }
-
 
 }
 
