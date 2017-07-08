@@ -8,8 +8,26 @@ var gameRooms = [gameRoom0];
 
 class GameRoomSocket {
 
-  constructor(io) {
+  constructor(io, numberOfRooms) {
     this.io = io;
+    this.createRooms(numberOfRooms);
+  }
+
+  createRooms(numberOfRooms) {
+    this.gameRooms = [];
+    for (var i = 0; i < numberOfRooms; i++) {
+      this.gameRooms.push(new GameRoom(i));
+    }
+  }
+
+  getAvailableRooms() {
+    return this.gameRooms.map((gameRoom, index) => {
+      return !gameRoom.isFull();
+    });
+  }
+
+  getFirstAvailableRoom() {
+    return this.getAvailableRooms()[0];
   }
 
   playGame(socket) {
@@ -93,7 +111,7 @@ class GameRoomSocket {
 };
 
 module.exports.init = (io) => {
-  const gameRoomSocket = new GameRoomSocket(io);
+  const gameRoomSocket = new GameRoomSocket(io, 10);
 
   io.on('connection', (socket) => {
   console.log(socket.id, ' user connected!');
