@@ -3,6 +3,7 @@ class GameRoom {
   constructor(id){
     this.players = [];
     this.roomId = id;
+    this.image = {};
   }
 
   addPlayer(playerId, bodyPart) {
@@ -40,6 +41,19 @@ class GameRoom {
 
   getRoomId(){
     return this.roomId;
+  }
+
+  addPartToImage(imagePart){
+    var bodyPart = Object.keys(imagePart)[0];
+    this.image[bodyPart] = imagePart[bodyPart];
+  }
+
+  isImageComplete(){
+    return Object.keys(this.image).length === 3;
+  }
+
+  deleteImage(){
+    this.image = {};
   }
 
 }
