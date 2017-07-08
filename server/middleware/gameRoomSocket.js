@@ -65,6 +65,33 @@ class GameRoomSocket {
       this.io.to(`gameRoom${roomId}`).emit('starting game', true);
     }
   }
+
+  gameEnd(socket) {
+    socket.on('game end', (userImage) => {
+      console.log('image received!', userImage);
+      console.log('name: ', this.getSocketGameRoomName(socket));
+      console.log('id: ', this.getSocketGameRoomId(socket));
+      var gameRoom = this.getSocketGameRoom(socket);
+      gameRoom.addPartToImage(userImage);
+      if (gameRoom.isImageComplete()) {
+        var roomName = this.getSocketGameRoomName(socket);
+        this.io.to(roomName).emit('image complete', gameRoom.image);
+      }
+    });
+  }
+
+  getSocketGameRoomName(socket) {
+    return Object.keys(socket.rooms)[1];
+  }
+
+  getSocketGameRoomId(socket) {
+    return parseInt(/\d+/.exec(this.getSocketGameRoomName(socket)));
+  }
+
+  getSocketGameRoom(socket) {
+    return gameRooms[this.getSocketGameRoomId(socket)];
+  }
+
 };
 
 module.exports.init = (io) => {
