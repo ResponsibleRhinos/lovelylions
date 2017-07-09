@@ -151,28 +151,45 @@ var saveImagePart = (req, bodyPart) => {
       req.body[bodyPart].path = `./images/${fileName}.png`;
       return db.getUserIdAsync(username);
     }).then((userId) => {
+      console.log('user id: ', userId);
       let thePath = `images?path=${fileName}.png`;
       return db.savePartImageAsync(userId, bodyPart, thePath);
     }).then((partId) => {
       req.body[bodyPart]['partId'] = partId;
     });
-}
+};
 
 app.post('/saveGameImage', (req, res) => {
   var bodyParts = ['head', 'torso', 'legs'];
   saveImagePart(req, 'head')
     .then(() => {
-      saveImagePart(req, 'torso');
+      return saveImagePart(req, 'torso');
     }).then(() => {
-      var base64Data = req.body['legs'].path.split(',')[1];
-      var fileName = generateFilename(base64Data);
-      req.body['legs'].path = `./images/${fileName}.png`;
-      return db.saveImageToFinalImageAsync(req.body, 'legs', req.body['legs'].path);
+      return saveImagePart(req, 'legs');
+    }).then(() => {
+      return db.saveImageToFinalImageAsync(req.body);
     }).then((data) => {
       bodyParts.forEach((part) => console.log(req.body[part]['partId']));
       res.end();
     });
 });
+
+// app.post('/saveGameImage', (req, res) => {
+//   var bodyParts = ['head', 'torso', 'legs'];
+//   saveImagePart(req, 'head')
+//     .then(() => {
+//       return saveImagePart(req, 'torso');
+//     }).then(() => {
+//       var base64Data = req.body['legs'].path.split(',')[1];
+//       var fileName = generateFilename(base64Data);
+//       req.body['legs'].path = `./images/${fileName}.png`;
+//       let thePath = `images?path=${fileName}.png`;
+//       return db.saveImageToFinalImageAsync(req.body, 'legs', thePath);
+//     }).then((data) => {
+//       bodyParts.forEach((part) => console.log(req.body[part]['partId']));
+//       res.end();
+//     });
+// });
 
 
 app.get('/images', (req, res) => {
