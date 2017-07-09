@@ -140,8 +140,9 @@ class App extends React.Component {
   showGameRoom() {
     this.setState({
       currentView: <GameRoom 
-                      login={this.state.login}
-                      generateImage={this.generateImage.bind(this)}/>
+        login={this.state.login}
+        generateImage={this.generateImage.bind(this)}
+        fetchGallery={this.fetchGallery.bind(this)}/>
     });
   }
 
@@ -163,12 +164,17 @@ class App extends React.Component {
   }
 
   saveComposite(compositeImage, userPart) {
+    this.saveImage(compositeImage, userPart)
+      .then(() => this.fetchGallery());
+  }
+
+  saveImage(compositeImage, userPart) {
     compositeImage[userPart].artist = this.state.login;
-    fetch(`/save?part=${userPart}`, {
+    return fetch(`/save?part=${userPart}`, {
       'method': 'POST',
       'headers': {'Content-Type': 'application/json'},
       'body': JSON.stringify(compositeImage)
-    }).then(() => this.fetchGallery())
+    });
   }
 
   render() {

@@ -2,9 +2,13 @@ require('dotenv').config();
 var express = require('express');
 var db = require('../database/index.js');
 var bodyParser = require('body-parser');
+var Promise = require('bluebird');
+
 
 var fs = require('fs');
 var crypto = require('crypto');
+fs.writeFileAsync = Promise.promisify(fs.writeFile);
+
 
 var session = require('express-session');
 var app = express();
@@ -135,6 +139,39 @@ app.post('/save', (req, res) => {
     });
   });
 });
+
+var saveImagePart = (req, bodyPart) => {
+  var base64Data = req.body[bodyPart].path.split(',')[1];
+  var fileName = generateFilename(base64Data);
+  var username = req.body.artist;
+  return fs.writeFileAsync(`./server/images/${fileName}.png`, base64Data, 'base64')
+    .catch((err) => {console.log(err)})
+    .then(() => {
+      req.body[bodyPart].path = `./images/${fileName}.png`;
+      return db.getUserIdAsync(username);
+    }).then((userId) => {
+      let thePath = `images?path=${fileName}.png`;
+      return db.savePartImageAsync(userId, bodyPart, thePath);
+    }).then((partId) => {
+      req.body[bodyPart]['partId'] = partId;
+    });
+}
+
+app.post('/saveGameImage', (req, res) => {
+  var bodyParts = ['head', 'torso', 'legs'];
+  saveImagePart(req, 'head')
+    .then(() => {
+      saveImagePart(req, 'torso');
+    }).then(() => {
+      var base64Data = req.body['legs'].path.split(',')[1];
+      var fileName = generateFilename(base64Data);
+      req.body['legs'].path = `./images/${fileName}.png`;
+      return db.saveImageToFinalImageAsync(req.body, 'legs', req.body['legs'].path);
+    }).then((data) => {
+      res.end();
+    });
+});
+
 
 app.get('/images', (req, res) => {
   var file = req.query.path;

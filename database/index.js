@@ -97,6 +97,44 @@ let savePartImage = (userId, part, path, callback) => {
   })
 };
 
+let getUserIdAsync = (username) => {
+  return db.one('SELECT ID from artist where username = $1', [username])
+  .then((data) => {
+    return data.id;
+  })
+  .catch(error => {
+    console.log('getUserId func error: ', error);
+  })
+}
+
+let savePartImageAsync = (userId, part, path) => {
+  return db.one(`INSERT INTO ${part} (_path, user_id) values ($1, $2) RETURNING id`, [path, userId])
+  .then((data) => {
+    return data.id;
+  })
+  .catch(error => {
+    console.log('savePartImage func error: ', error);
+  })
+};
+
+let saveImageToFinalImageAsync = (obj, part, path) => {
+  let username = obj['artist'];
+  let userId;
+  return getUserIdAsync(username)
+    .then((userId) => {
+      return savePartImage(userId, part, path);
+    }).then((data) => {
+      obj[part]['partId'] = data;
+      let headId = obj['head']['partId'];
+      let torsoId = obj['torso']['partId'];
+      let legsId = obj['legs']['partId'];
+      return db.one('INSERT INTO final_image (head_id, torso_id, legs_id, user_id) values ($1, $2, $3, $4) RETURNING id', [headId, torsoId, legsId, userId]);
+    })
+    .catch(error => {
+      console.log('final_image insert func error: ', error);
+    });
+};
+
 let saveImageToFinalImage = (obj, part, path, callback) => {
   let username = obj[part]['artist'];
   let userId;
@@ -262,10 +300,13 @@ module.exports = {
   getTwoImages: getTwoImages,
   savePartImage: savePartImage,
   getTopRatedImages: getTopRatedImages,
+  savePartImageAsync: savePartImageAsync,
   getAllFinalImagesOfArtist: getAllFinalImagesOfArtist,
   getNewestImages: getNewestImages,
   changeRanking: changeRanking,
   db: db,
   getUserId: getUserId,
+  getUserIdAsync: getUserIdAsync,
   saveImageToFinalImage: saveImageToFinalImage,
+  saveImageToFinalImageAsync: saveImageToFinalImageAsync
 };

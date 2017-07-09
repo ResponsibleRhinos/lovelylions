@@ -123,7 +123,6 @@ class GameRoom extends React.Component {
 
   saveImage(image) {
     image.artist = this.props.login;
-    console.log('image saved: ', image);
     return fetch('/saveGameImage', {
       'method': 'POST',
       'headers': {'Content-Type': 'application/json'},
