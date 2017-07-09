@@ -128,13 +128,6 @@ class App extends React.Component {
         currentView: <Composite pic={finalImage} generateImage={this.generateImage} saveImage={this.saveComposite} login={this.state.login} idx={idx} username={username} dontShowRegenerate={true} showShare={true}/>
       })
     );
-
-  showGameRoom() {
-    this.setState({
-      currentView: <GameRoom 
-                      user={this.state.login}
-                      generateImage={this.generateImage.bind(this)}/>
-    });
   }
 
   showGameRoom() {
