@@ -144,6 +144,7 @@ var saveImagePart = (req, bodyPart) => {
   var base64Data = req.body[bodyPart].path.split(',')[1];
   var fileName = generateFilename(base64Data);
   var username = req.body.artist;
+  console.log('username: ', username);
   return fs.writeFileAsync(`./server/images/${fileName}.png`, base64Data, 'base64')
     .catch((err) => {console.log(err)})
     .then(() => {
@@ -168,6 +169,7 @@ app.post('/saveGameImage', (req, res) => {
       req.body['legs'].path = `./images/${fileName}.png`;
       return db.saveImageToFinalImageAsync(req.body, 'legs', req.body['legs'].path);
     }).then((data) => {
+      bodyParts.forEach((part) => console.log(req.body[part]['partId']));
       res.end();
     });
 });

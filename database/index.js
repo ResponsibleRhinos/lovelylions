@@ -122,7 +122,7 @@ let saveImageToFinalImageAsync = (obj, part, path) => {
   let userId;
   return getUserIdAsync(username)
     .then((userId) => {
-      return savePartImage(userId, part, path);
+      return savePartImageAsync(userId, part, path);
     }).then((data) => {
       obj[part]['partId'] = data;
       let headId = obj['head']['partId'];
