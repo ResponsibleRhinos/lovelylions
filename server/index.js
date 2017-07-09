@@ -2,13 +2,9 @@ require('dotenv').config();
 var express = require('express');
 var db = require('../database/index.js');
 var bodyParser = require('body-parser');
-var Promise = require('bluebird');
 
 
 var fs = require('fs');
-fs.writeFileAsync = Promise.promisify(fs.writeFile);
-
-
 var session = require('express-session');
 var app = express();
 var port = process.env.PORT || 3000;
