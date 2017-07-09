@@ -131,25 +131,6 @@ let saveImageToFinalImageAsync = (obj) => {
     });
 };
 
-// let saveImageToFinalImageAsync = (obj, part, path) => {
-//   let username = obj['artist'];
-//   let userId;
-//   return getUserIdAsync(username)
-//     .then((userId) => {
-//       obj.userId = userId;
-//       return savePartImageAsync(userId, part, path);
-//     }).then((data) => {
-//       obj[part]['partId'] = data;
-//       let headId = obj['head']['partId'];
-//       let torsoId = obj['torso']['partId'];
-//       let legsId = obj['legs']['partId'];
-//       return db.one('INSERT INTO final_image (head_id, torso_id, legs_id, user_id) values ($1, $2, $3, $4) RETURNING id', [headId, torsoId, legsId, obj.userId]);
-//     })
-//     .catch(error => {
-//       console.log('final_image insert func error: ', error);
-//     });
-// };
-
 let saveImageToFinalImage = (obj, part, path, callback) => {
   let username = obj[part]['artist'];
   let userId;
