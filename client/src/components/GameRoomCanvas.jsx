@@ -160,9 +160,6 @@ class GameRoomCanvas extends React.Component {
           value={this.state.brushWidth}
           type="range" min="5" max="25" step="1"></input>
         </div>
-        <div className="button-cluster">
-          <input onClick={this.submitImage.bind(this)} type="button" value="Done"></input>
-        </div>
       </div>
       )
   }

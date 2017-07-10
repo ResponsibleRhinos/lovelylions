@@ -112,9 +112,15 @@ class GameRoom extends React.Component {
           userPart={this.state.bodyPart} 
           login={this.props.login}
           dontShowRegenerate={true}
-          saveImage={this.saveImage.bind(this)}/>
+          saveImage={this.saveImage.bind(this)}
+          showPlayAgain={true}
+          playAgain={this.playAgain.bind(true)}/>
     });
     this.socket.emit('image received', true);
+  }
+
+  playAgain(){
+    
   }
 
   componentWillUnmount() {
