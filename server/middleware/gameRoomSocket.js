@@ -95,6 +95,13 @@ class GameRoomSocket {
         gameRoom.deleteImage();
       }
     });
+    this.imageReceived(socket);
+  }
+
+  imageReceived(socket) {
+    socket.on('image received', () => {
+      this.leaveRoom(socket);
+    })
   }
 
   getSocketGameRoomName(socket) {
@@ -107,6 +114,12 @@ class GameRoomSocket {
 
   getSocketGameRoom(socket) {
     return this.gameRooms[this.getSocketGameRoomId(socket)];
+  }
+
+  leaveRoom(socket) {
+    var gameRoom = this.getSocketGameRoom(socket);
+    gameRoom.removePlayer(socket.id);
+    socket.leave(`gameRoom${gameRoom.getRoomId()}`);
   }
 
 };
@@ -130,7 +143,7 @@ module.exports.init = (io) => {
   // end game
   gameRoomSocket.gameEnd(socket);
 
-});
+  });
 }
 
 

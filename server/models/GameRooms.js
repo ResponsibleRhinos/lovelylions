@@ -20,6 +20,10 @@ class GameRoom {
     }
   }
 
+  removeAllPlayers() {
+    this.players = [];
+  }
+
   playersInRoom() {
     return this.players.length;
   }

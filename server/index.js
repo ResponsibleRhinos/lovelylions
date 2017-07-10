@@ -3,9 +3,8 @@ var express = require('express');
 var db = require('../database/index.js');
 var bodyParser = require('body-parser');
 
-var fs = require('fs');
-var crypto = require('crypto');
 
+var fs = require('fs');
 var session = require('express-session');
 var app = express();
 var port = process.env.PORT || 3000;
@@ -26,6 +25,8 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var GameRoom = require('./models/GameRooms.js');
 var gameRoomSocket = require('./middleware/gameRoomSocket.js');
+var saveImage = require('./middleware/saveImage.js');
+var {isLoggedIn, generateFilename} = require('./middleware/helperFunctions.js');
 
 app.use(logger('dev'));
 app.use(cookieParser());
@@ -50,20 +51,6 @@ app.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
 });
-
-
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated())
-      return next();
-  res.redirect('/');
-}
-
-
-var generateFilename = (fileData) => {
-  var hash = crypto.createHash('sha256');
-  hash.update(fileData);
-  return hash.digest('hex');
-}
 
 app.get('/gallery', (req, res) => {
   var username = req.query.username;
@@ -135,6 +122,9 @@ app.post('/save', (req, res) => {
     });
   });
 });
+
+app.post('/saveGameImage', saveImage);
+
 
 app.get('/images', (req, res) => {
   var file = req.query.path;

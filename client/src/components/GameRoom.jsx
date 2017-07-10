@@ -107,17 +107,27 @@ class GameRoom extends React.Component {
 
   imageComplete(image) {
     this.setState({
-      // currentView: '',
       showCanvas: false,
       currentView: <Composite pic={image} 
           userPart={this.state.bodyPart} 
           login={this.props.login}
-          dontShowRegenerate={true}/>
+          dontShowRegenerate={true}
+          saveImage={this.saveImage.bind(this)}/>
     });
+    this.socket.emit('image received', true);
   }
 
   componentWillUnmount() {
     this.socket.emit('leave game', this.state.roomId);
+  }
+
+  saveImage(image) {
+    image.artist = this.props.login;
+    return fetch('/saveGameImage', {
+      'method': 'POST',
+      'headers': {'Content-Type': 'application/json'},
+      'body': JSON.stringify(image)
+    }).then(() => this.props.fetchGallery());
   }
 
   waitForPlayers(players) {
