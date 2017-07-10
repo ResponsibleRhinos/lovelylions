@@ -173,6 +173,7 @@ class App extends React.Component {
             <h1>cadavre exquis</h1>
             <a href="#" onClick={this.componentSwitch}>canvas</a>
             <a href="#" onClick={this.componentSwitch}>multiplayer</a>
+            <a className="gallery-button" href="#" onClick={this.fetchLeaderBoard}>leaderboard</a>
             {this.state.login ? (
               <span>
                 <a href="#" onClick={this.componentSwitch}>gallery</a>
@@ -184,7 +185,7 @@ class App extends React.Component {
             ) : (
               <a href="/auth/facebook" >login</a>
             )}
-            <a className="gallery-button" href="#" onClick={this.fetchLeaderBoard}>LeaderBoard</a>
+            
           </div>
           {this.state.currentView}
         </div>
