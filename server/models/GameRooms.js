@@ -4,6 +4,7 @@ class GameRoom {
     this.players = [];
     this.roomId = id;
     this.image = {};
+    this.gameInSession = false;
   }
 
   addPlayer(playerId, bodyPart) {
@@ -53,7 +54,7 @@ class GameRoom {
   }
 
   isImageComplete(){
-    return Object.keys(this.image).length === 3;
+    return Object.keys(this.image).length === this.playersInRoom();
   }
 
   deleteImage(){

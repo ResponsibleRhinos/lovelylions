@@ -1,11 +1,5 @@
 var GameRoom = require('../models/GameRooms.js');
 
-var gameRoom0 = new GameRoom(0);
-var gameRooms = [gameRoom0];
-// for (var i = 0; i < 10; i++) {
-//   gameRooms.push(new GameRoom(i));
-// }
-
 class GameRoomSocket {
 
   constructor(io, numberOfRooms) {
@@ -59,7 +53,9 @@ class GameRoomSocket {
     socket.on('leave game', (roomId) => {
       var gameRoom = this.gameRooms[roomId];
       gameRoom.removePlayer(socket.id);
-      this.io.to(`gameRoom${roomId}`).emit('player joined', 3 - gameRoom.playersInRoom());
+      if (!gameRoom.gameInSession) {
+        this.io.to(`gameRoom${roomId}`).emit('player joined', 3 - gameRoom.playersInRoom());
+      }
     });
   }
 
@@ -71,7 +67,9 @@ class GameRoomSocket {
           var gameRoom = this.gameRooms[parseInt(roomIndex[0])];
           gameRoom.removePlayer(socket.id);
           console.log('game left: ', roomIndex);
-          this.io.to(`gameRoom${roomIndex}`).emit('player joined', 3 - gameRoom.playersInRoom());
+          if (!gameRoom.gameInSession) {
+            this.io.to(`gameRoom${roomIndex}`).emit('player joined', 3 - gameRoom.playersInRoom());
+          }
         }
       });
     });
@@ -81,6 +79,7 @@ class GameRoomSocket {
     if (gameRoom.playersInRoom() < 3) {
       this.io.to(`gameRoom${roomId}`).emit('player joined', 3 - gameRoom.playersInRoom());
     } else {
+      gameRoom.gameInSession = true;
       this.io.to(`gameRoom${roomId}`).emit('starting game', 50);
     }
   }
@@ -93,6 +92,7 @@ class GameRoomSocket {
         var roomName = this.getSocketGameRoomName(socket);
         this.io.to(roomName).emit('image complete', gameRoom.image);
         gameRoom.deleteImage();
+        gameRoom.gameInSession = false;
       }
     });
     this.imageReceived(socket);
