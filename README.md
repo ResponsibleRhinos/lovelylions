@@ -8,6 +8,10 @@
   - Derek Johnson
   - Kenly Hui
   - Vincent La
+  - [Joseph Kwon](https://github.com/JKwon823)
+  - [Carlos Osorio](https://github.com/cosorio94)
+  - Daniel Anderson
+  - Alexander Poet
 
 ## Table of Contents
 
